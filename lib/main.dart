@@ -35,6 +35,7 @@ class _MyHomePageState extends State<MyHomePage> {
     Center(child: Icon(Icons.chat)),
     Center(child: Icon(Icons.account_circle)),
   ];
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -73,7 +74,10 @@ class _MyHomePageState extends State<MyHomePage> {
         ),
         body: Column(
           children: <Widget>[
-            Container(color: Colors.lightBlue, height: 24,),
+            Container(
+              color: Colors.lightBlue,
+              height: 24,
+            ),
             Expanded(child: _widgetOptions.elementAt(_selectedIndex)),
           ],
         ));
@@ -117,6 +121,7 @@ class FirstPage extends StatelessWidget {
 }
 
 class RecentPage extends StatelessWidget {
+  final int _hour = DateTime.now().hour;
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -178,7 +183,7 @@ class RecentPage extends StatelessWidget {
           ),
           Expanded(child: Container()),
           Stack(
-            alignment: Alignment.center,
+            alignment: Alignment.bottomCenter,
             children: <Widget>[
               Padding(
                 padding: const EdgeInsets.only(top: 8, bottom: 16),
@@ -203,7 +208,7 @@ class RecentPage extends StatelessWidget {
               Align(
                 alignment: Alignment.bottomRight,
                 child: Padding(
-                  padding: const EdgeInsets.only(right: 32),
+                  padding: const EdgeInsets.only(right: 32, bottom: 2),
                   child: Image.asset(
                     'assets/Spanish app img.png',
                     height: 82,
@@ -216,7 +221,9 @@ class RecentPage extends StatelessWidget {
       ),
       decoration: BoxDecoration(
           image: DecorationImage(
-              image: AssetImage('assets/spanish app bg.jpg'),
+              image: AssetImage((_hour >= 6 && _hour <= 18)
+                  ? 'assets/bg_day.jpg'
+                  : 'assets/bg_ecity.png'),
               fit: BoxFit.cover)),
     );
   }
