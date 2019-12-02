@@ -157,17 +157,17 @@ class _RecentPageState extends State<RecentPage> {
                 showDialog(
                     context: this.context,
                     builder: (context) => AlertDialog(
-                          title: Text('Alert'),
+                          title: Text('Alert!'),
                           content: Text('Some message here.'),
                           actions: <Widget>[
                             FlatButton(
-                              child: Text('Cancel'),
+                              child: Text('Annuler'),
                               onPressed: () {
                                 Navigator.of(context).pop();
                               },
                             ),
                             FlatButton(
-                              child: Text('Ok'),
+                              child: Text('Valider'),
                               onPressed: () {
                                 Navigator.of(context).pop();
                               },
