@@ -16,9 +16,10 @@ class MyApp extends StatelessWidget {
 }
 
 class MyHomePage extends StatefulWidget {
-  MyHomePage({Key key, this.title}) : super(key: key);
+  MyHomePage({Key key, this.title, this.pageNumber = 0}) : super(key: key);
 
   final String title;
+  final int pageNumber;
 
   @override
   _MyHomePageState createState() => _MyHomePageState();
@@ -35,6 +36,14 @@ class _MyHomePageState extends State<MyHomePage> {
     Center(child: Icon(Icons.chat)),
     Center(child: Icon(Icons.account_circle)),
   ];
+
+  @override
+  void initState() {
+    super.initState();
+    setState(() {
+      _selectedIndex = widget.pageNumber;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -94,21 +103,6 @@ class FirstPage extends StatelessWidget {
     return DefaultTabController(
       length: 2,
       child: Scaffold(
-        appBar: TabBar(
-          indicatorColor: Colors.lightBlue,
-          indicatorPadding: EdgeInsets.zero,
-          labelPadding: EdgeInsets.zero,
-          labelColor: Colors.lightBlue,
-          unselectedLabelColor: Colors.grey,
-          tabs: [
-            Tab(
-              text: 'RECENT',
-            ),
-            Tab(
-              text: 'HISTORY',
-            ),
-          ],
-        ),
         body: TabBarView(
           children: [
             RecentPage(),
@@ -120,8 +114,14 @@ class FirstPage extends StatelessWidget {
   }
 }
 
-class RecentPage extends StatelessWidget {
+class RecentPage extends StatefulWidget {
+  @override
+  _RecentPageState createState() => _RecentPageState();
+}
+
+class _RecentPageState extends State<RecentPage> {
   final int _hour = DateTime.now().hour;
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -131,7 +131,7 @@ class RecentPage extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.only(top: 16),
             child: Text(
-              'Et vous, qui allez-vous retrouver?',
+              'OUBBA, pour une ville intélligente',
               style: TextStyle(color: Colors.white, fontSize: 24),
               textAlign: TextAlign.center,
             ),
@@ -139,9 +139,9 @@ class RecentPage extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: Text(
-              'Bus ou covoiturage : choisissez le trajet qui vous convient le mieux',
+              'Prenez votre ville en main : choisissez le trajet qui vous convient le mieux',
               style: TextStyle(
-                color: Colors.white,
+                color: Colors.white70,
               ),
               textAlign: TextAlign.center,
             ),
@@ -152,10 +152,35 @@ class RecentPage extends StatelessWidget {
             decoration: BoxDecoration(
                 color: Colors.lightBlue,
                 borderRadius: BorderRadius.circular(16)),
-            child: Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Text(
-                'PROPOSER UN TRAJET',
+            child: FlatButton.icon(
+              onPressed: () {
+                showDialog(
+                    context: this.context,
+                    builder: (context) => AlertDialog(
+                          title: Text('Alert'),
+                          content: Text('Some message here.'),
+                          actions: <Widget>[
+                            FlatButton(
+                              child: Text('Cancel'),
+                              onPressed: () {
+                                Navigator.of(context).pop();
+                              },
+                            ),
+                            FlatButton(
+                              child: Text('Ok'),
+                              onPressed: () {
+                                Navigator.of(context).pop();
+                              },
+                            ),
+                          ],
+                        ));
+              },
+              icon: Icon(
+                Icons.gps_fixed,
+                color: Colors.white,
+              ),
+              label: Text(
+                'VIA GPS',
                 style: TextStyle(
                   color: Colors.white,
                 ),
@@ -169,9 +194,20 @@ class RecentPage extends StatelessWidget {
               width: MediaQuery.of(context).size.width - 64,
               decoration: BoxDecoration(
                   color: Colors.white, borderRadius: BorderRadius.circular(16)),
-              child: Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: Text(
+              child: FlatButton.icon(
+                onPressed: () {
+                  Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => MyHomePage(
+                                pageNumber: 1,
+                              )));
+                },
+                icon: Icon(
+                  Icons.search,
+                  color: Colors.lightBlue,
+                ),
+                label: Text(
                   'RECHERCHER',
                   style: TextStyle(
                     color: Colors.lightBlue,
@@ -182,41 +218,6 @@ class RecentPage extends StatelessWidget {
             ),
           ),
           Expanded(child: Container()),
-          Stack(
-            alignment: Alignment.bottomCenter,
-            children: <Widget>[
-              Padding(
-                padding: const EdgeInsets.only(top: 8, bottom: 16),
-                child: Container(
-                  width: MediaQuery.of(context).size.width - 64,
-                  decoration: BoxDecoration(
-                      color: Colors.lightBlue,
-                      borderRadius: BorderRadius.circular(4)),
-                  child: Padding(
-                    padding: const EdgeInsets.only(
-                        left: 16, top: 16, right: 32, bottom: 16),
-                    child: Text(
-                      'Et si vous aussi vous economisiez 219E sur votre assurance auto?',
-                      style: TextStyle(
-                        color: Colors.white,
-                      ),
-                      textAlign: TextAlign.start,
-                    ),
-                  ),
-                ),
-              ),
-              Align(
-                alignment: Alignment.bottomRight,
-                child: Padding(
-                  padding: const EdgeInsets.only(right: 32, bottom: 2),
-                  child: Image.asset(
-                    'assets/Spanish app img.png',
-                    height: 82,
-                  ),
-                ),
-              ),
-            ],
-          ),
         ],
       ),
       decoration: BoxDecoration(
